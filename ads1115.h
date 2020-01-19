@@ -62,6 +62,7 @@ typedef struct
 
 int ads1115_init(ads1115* dev, uint8_t s_address);
 int ads1115_configure(ads1115* dev, ads1115_config m_con);
-int ads1115_read(ads1115 *dev, short *data);
+int ads1115_read_data(ads1115 *dev, int16_t *data);
+int ads1115_read_config(ads1115 *dev, uint16_t *data);
 
 #endif // ADS1115_H

@@ -34,7 +34,7 @@ int ads1115_configure(ads1115 *dev, ads1115_config m_con)
     return 1;
 }
 
-int ads1115_read(ads1115 *dev, short *data)
+int ads1115_read_data(ads1115 *dev, int16_t *data)
 {
     uint8_t buf[3], status = 1;
 
@@ -122,4 +122,27 @@ int ads1115_read(ads1115 *dev, short *data)
         }
     }
     return status;
+}
+
+int ads1115_read_config(ads1115 *dev, uint16_t *data)
+{
+    uint8_t buf[3];
+
+    buf[0] = CONFIG_REG;
+    buf[1] = 0;
+    buf[2] = 0;
+
+    if (write(dev->fd, buf, 1) < 1)
+    {
+        perror("[ERROR] Could not select config register.");
+        return -1;
+    }
+
+    if (read(dev->fd, &buf[1], 2) < 2)
+    {
+        perror("[ERROR] Could not read config register.");
+        return -1;
+    }
+    *data = (((uint16_t)(buf[1]) << 8) | buf[2]);
+    return 1;
 }
