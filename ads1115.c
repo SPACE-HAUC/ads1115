@@ -113,7 +113,7 @@ int ads1115_read_data(ads1115 *dev, int16_t *data)
         buf[0] = CONFIG_REG;
         m_con.mux++;
         buf[1] = m_con.raw >> 8;
-        
+
         buf[2] = m_con.raw & 0xff;
         if (write(dev->fd, buf, 3) < 3)
         {
@@ -145,4 +145,10 @@ int ads1115_read_config(ads1115 *dev, uint16_t *data)
     }
     *data = (((uint16_t)(buf[1]) << 8) | buf[2]);
     return 1;
+}
+
+void ads1115_destroy(ads1115 *dev)
+{
+    close(dev->fd);
+    free(dev);
 }

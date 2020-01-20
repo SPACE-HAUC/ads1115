@@ -63,5 +63,6 @@ int ads1115_init(ads1115 *dev, uint8_t s_address);
 int ads1115_configure(ads1115 *dev, ads1115_config m_con);
 int ads1115_read_data(ads1115 *dev, int16_t *data);
 int ads1115_read_config(ads1115 *dev, uint16_t *data);
+void ads1115_destroy(ads1115 *dev);
 
 #endif // ADS1115_H
