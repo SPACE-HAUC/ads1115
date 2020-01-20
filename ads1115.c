@@ -124,6 +124,66 @@ int ads1115_read_data(ads1115 *dev, int16_t *data)
     return status;
 }
 
+int ads1115_read_cont(ads1115 *dev, int16_t *data)
+{
+    uint8_t buf[3], status = 1;
+
+    ads1115_config m_con;
+    m_con.raw = 0;
+    m_con.os = 0;
+    m_con.mux = 0x04;
+    m_con.pga = 1;
+    m_con.mode = 0;
+    m_con.dr = 6;
+
+    buf[0] = CONFIG_REG;
+    buf[1] = m_con.raw >> 8;
+    buf[2] = m_con.raw & 0xFF;
+
+    if (write(dev->fd, buf, 3) < 3)
+    {
+        perror("[ERROR] Could not access target register.");
+        return -1;
+    }
+
+    m_con.raw = 0;
+    m_con.os = 0;
+    m_con.mux = 0x04;
+    m_con.pga = 1;
+    m_con.mode = 0;
+    m_con.dr = 6;
+    for (int i = 0; i < 4; i++)
+    {
+        buf[0] = CONVERSION_REG;
+        buf[1] = 0x00;
+        buf[2] = 0x00;
+        if (write(dev->fd, buf, 1) < 1)
+        {
+            perror("Could not stat read");
+            status = 0;
+        }
+
+        if (read(dev->fd, &buf[1], 2) < 2)
+        {
+            perror("Could not stat read command");
+            status = 0;
+        }
+        data[i] = (((uint16_t)buf[1]) << 8) | buf[2];
+        buf[0] = CONFIG_REG;
+        m_con.mux++;
+        buf[1] = m_con.raw >> 8;
+
+        buf[2] = m_con.raw & 0xff;
+        if (write(dev->fd, buf, 3) < 3)
+        {
+            perror("Could not stat mux change");
+            status = 0;
+        }
+    }
+
+    return status;
+}
+
 int ads1115_read_config(ads1115 *dev, uint16_t *data)
 {
     uint8_t buf[3];
