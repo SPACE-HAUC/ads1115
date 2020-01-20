@@ -134,7 +134,7 @@ int ads1115_read_cont(ads1115 *dev, int16_t *data)
     m_con.mux = 0x04;
     m_con.pga = 1;
     m_con.mode = 0;
-    m_con.dr = 6;
+    m_con.dr = 5;
 
     buf[0] = CONFIG_REG;
     buf[1] = m_con.raw >> 8;
@@ -151,7 +151,7 @@ int ads1115_read_cont(ads1115 *dev, int16_t *data)
     m_con.mux = 0x04;
     m_con.pga = 1;
     m_con.mode = 0;
-    m_con.dr = 6;
+    m_con.dr = 5;
     for (int i = 0; i < 4; i++)
     {
         buf[0] = CONVERSION_REG;
