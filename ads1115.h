@@ -24,20 +24,19 @@
 #include <signal.h>
 
 /* I2C ADDRESSING */
-#define ADS1115_S_ADDR 0x48             // Device address for ADS1115
-#define I2C_BUS "/dev/i2c-0"            // I2C bus name
+#define ADS1115_S_ADDR 0x48  // Device address for ADS1115
+#define I2C_BUS "/dev/i2c-1" // I2C bus name
 
 /* REGISTERS */
-#define CONVERSION_REG 0x00            // ADC conversion register
-#define CONFIG_REG 0x01                 // ADC configuration register
+#define CONVERSION_REG 0x00 // ADC conversion register
+#define CONFIG_REG 0x01     // ADC configuration register
 #define CONFIG_REG_OS 0x80
 #define CONFIG_REG_MUX_0 0x40
 #define CONFIG_REG_MUX_1 0x50
 #define CONFIG_REG_MUX_2 0x60
 #define CONFIG_REG_MUX_3 0x70
 
-typedef union
-{
+typedef union {
     struct
     {
         uint8_t comp_que : 2;
@@ -60,8 +59,8 @@ typedef struct
     char fname[40];
 } ads1115;
 
-int ads1115_init(ads1115* dev, uint8_t s_address);
-int ads1115_configure(ads1115* dev, ads1115_config m_con);
+int ads1115_init(ads1115 *dev, uint8_t s_address);
+int ads1115_configure(ads1115 *dev, ads1115_config m_con);
 int ads1115_read_data(ads1115 *dev, int16_t *data);
 int ads1115_read_config(ads1115 *dev, uint16_t *data);
 
